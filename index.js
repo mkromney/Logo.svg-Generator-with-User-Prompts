@@ -2,11 +2,27 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+// Shapes const variable for choosing the shape of the logo. //
+const shapeChoices = ["Triangle", "Circle", "Square"];
+
+//Stores the values of the shapeChoices. //
+const shapeLog = {
+  Triangle: "", Circle: "", Square: ""
+};
+
+// Color const variable for choosing the color of the shape in the logo. //
+const colorChoices = ["Green", "Yellow", "Blue", "Red"];
+
+//Stores the values of the colorChoices. //
+const colorLog = {
+  Green: "", Yellow: "", Blue: "", Red: "", 
+};
+
 // The following lines create an array of questions for user input. These are modelled after the .prompt code syntax within Inquirer. Includes a validate prompt that requests an answer when the user does not give one. //
 inquirer
 .prompt([
   {
-    // Title //
+    // User input for the three letters in the svg logo. //
     type: 'input',
     name: 'text',
     message: 'Three Letter Logo',
@@ -22,8 +38,8 @@ inquirer
       // License Question, this list is stored above in the licenses const var licenseChoices. //
       type: "list",
       name: "shape",
-      message: "Which of these Licenses is applicable to your Project?",
-      choices: licenseChoices
+      message: "Choose a shape.",
+      choices: shapeChoices
     },
   ])
 
