@@ -4,19 +4,24 @@ const fs = require("fs");
 
 // The following lines create an array of questions for user input. These are modelled after the .prompt code syntax within Inquirer. Includes a validate prompt that requests an answer when the user does not give one. //
 inquirer
-  .prompt([
-    {
-      // Title //
-      type: 'input',
-      name: 'title',
-      message: 'Project Title?',
-      validate: (answer) =>
-          answer === "" ? "Please give an answer." : true,
+.prompt([
+  {
+    // Title //
+    type: 'input',
+    name: 'text',
+    message: 'Three Letter Logo',
+    validate: (answer) => {
+      // Forces user input to include at least three letters. //
+      if (answer.length !== 3) {
+        return 'Please enter exactly three letters.';
+      }
+      return true;
     },
+  },
     {
       // License Question, this list is stored above in the licenses const var licenseChoices. //
       type: "list",
-      name: "license",
+      name: "shape",
       message: "Which of these Licenses is applicable to your Project?",
       choices: licenseChoices
     },
@@ -31,11 +36,9 @@ inquirer
 
     //Licenses Selection from List Section //
     const selectedLicense = answers.license;
-    const selectedLicenseBadge = licenseBadges[selectedLicense];
-    const selectedLicenseText = licenseTexts[selectedLicense];
+    
     console.log("Selected License:", selectedLicense);
-    console.log("License Badge:", selectedLicenseBadge);
-    console.log("License Text:", selectedLicenseText);
+    
 
   
     const fs = require('fs');
@@ -52,10 +55,9 @@ inquirer
       } else {
         console.log('logo.svg file successfully created!');
       }
+      });
     });
 
+// Need to catch errors here. //
+  
 
-  // Catches any errors that might have occurred in the rendering. //
-  .catch(error => {
-    console.error("Error occurred:", error);
-  });
