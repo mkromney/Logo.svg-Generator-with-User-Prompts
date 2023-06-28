@@ -1,7 +1,35 @@
-<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+class Circle {
+  constructor(color) {
+    this.color = color;
+  }
 
-  <circle cx="150" cy="100" r="80" fill="green" />
+  render() {
+    return `<circle cx="50" cy="50" r="40" style="fill:${this.color};" />`;
+  }
+}
 
-  <text x="150" y="125" font-size="60" text-anchor="middle" fill="white">SVG</text>
+class Triangle {
+  constructor(color) {
+    this.color = color;
+  }
 
-</svg>
+  render() {
+    return `<polygon points="50,10 90,90 10,90" style="fill:${this.color};" />`;
+  }
+}
+
+class Square {
+  constructor(color) {
+    this.color = color;
+  }
+
+  render() {
+    return `<rect x="10" y="10" width="80" height="80" style="fill:${this.color};" />`;
+  }
+}
+
+module.exports = {
+  Circle,
+  Triangle,
+  Square,
+};
