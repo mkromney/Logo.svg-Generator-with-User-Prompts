@@ -1,79 +1,86 @@
-// The package needed for the assignment is here, in a const variable (Inquirer). // 
-const inquirer = require("inquirer");
-const fs = require("fs");
+const inquirer = require('inquirer');
+const fs = require('fs');
+const { Circle, Triangle, Square } = require('./Lib/shapes');
 
-// Shapes const variable for choosing the shape of the logo. //
-const shapeChoices = ["Triangle", "Circle", "Square"];
-
-//Stores the values of the shapeChoices. //
-const shapeLog = {
-  Triangle: "", Circle: "", Square: ""
-};
-
-// Color const variable for choosing the color of the shape in the logo. //
-const colorChoices = ["Green", "Yellow", "Blue", "Red"];
-
-//Stores the values of the colorChoices. //
-const colorLog = {
-  Green: "", Yellow: "", Blue: "", Red: "", 
-};
-
-// The following lines create an array of questions for user input. These are modelled after the .prompt code syntax within Inquirer. Includes a validate prompt that requests an answer when the user does not give one. //
-inquirer
-.prompt([
+// Define the questions for the user prompts
+const questions = [
   {
-    // User input for the three letters in the svg logo. //
+    type: 'list',
+    name: 'shape',
+    message: 'Select a shape:',
+    choices: ['circle', 'triangle', 'square'],
+  },
+  {
+    type: 'list',
+    name: 'color',
+    message: 'Select a color:',
+    choices: ['blue', 'green', 'red', 'yellow'],
+  },
+  {
     type: 'input',
-    name: 'text',
-    message: 'Three Letter Logo',
-    validate: (answer) => {
-      // Forces user input to include at least three letters. //
-      if (answer.length !== 3) {
-        return 'Please enter exactly three letters.';
+    name: 'letters',
+    message: 'Enter three letters:',
+    validate: (input) => {
+      if (input.length === 3) {
+        return true;
       }
-      return true;
+      return 'Please enter exactly three letters.';
     },
   },
-    {
-      // License Question, this list is stored above in the licenses const var licenseChoices. //
-      type: "list",
-      name: "shape",
-      message: "Choose a shape.",
-      choices: shapeChoices
-    },
-  ])
+];
 
-  // This sections creates const variables for the responses and then console logs them. //
-  .then(answers => {
-    
-    // Project Title Answer Section //
-    const projectTitle = answers.tsitle;
-    console.log('Project Title:', projectTitle);
+// Prompt the user with the questions
+inquirer.prompt(questions).then((answers) => {
+  const { shape, color, letters } = answers;
 
-    //Licenses Selection from List Section //
-    const selectedLicense = answers.license;
-    
-    console.log("Selected License:", selectedLicense);
-    
+  // Generate the SVG markup based on user inputs
+  const svgMarkup = generateSVGAttributes(shape, color, letters);
 
-  
-    const fs = require('fs');
+  // Write the SVG markup to a file
+  fs.writeFile('logo.svg', svgMarkup, (err) => {
+    if (err) {
+      console.error('Failed to write SVG file:', err);
+    } else {
+      console.log('SVG file generated successfully!');
+    }
+  });
+});
 
-    // Preliminary help from https://www.w3.org/2000/svg -- not sure I will use this, no idea yet if it works. //
-    const svgContent = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
-      <rect x="50" y="50" width="200" height="100" fill="blue"></rect>
-    </svg>`;
+// Function to generate the SVG Logo
+function generateSVGAttributes(shape, color, letters) {
+  let shapeAttributes = '';
 
-    fs.writeFile('logo.svg', svgContent, (err) => {
-      if (err) {
-        console.error('Error occurred while creating logo.svg:', err);
-      } else {
-        console.log('logo.svg file successfully created!');
+  // Generate the shape based on the selected shape
+  switch (shape) {
+    case 'circle':
+      shapeAttributes = `<circle cx="50" cy="50" r="40" />`;
+      break;
+    case 'triangle':
+      shapeAttributes = `<polygon points="50,10 90,90 10,90" />`;
+      break;
+    case 'square':
+      shapeAttributes = `<rect x="10" y="10" width="80" height="80" />`;
+      break;
+    default:
+      console.error('Invalid shape selected!');
+      break;
+  }
+
+  // Generate the SVG markup with the selected shape, color, and letters
+  const svgLogo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <style>
+      .shape {
+        fill: ${color};
       }
-      });
-    });
+      .letters {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        fill: #fff; /* Updated to make the text white */
+      }
+    </style>
+    <g class="shape">${shapeAttributes}</g>
+    <text class="letters" x="50" y="60" text-anchor="middle">${letters}</text>
+  </svg>`;
 
-// Need to catch errors here. //
- 
-
+  return svgLogo;
+}
