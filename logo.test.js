@@ -1,34 +1,31 @@
-// // Jest test example: 
-// describe('Testing Multiply'), () => {
-//   const color = 'blue'
-//   Test('Adds colour blue to class Triangle', () => {
-//     expect(triangle.render()).toBe(
-//       '<polygon points="100, 30, 200 200, 0 200" style="fill:blue;" />'
-//     )
-//   })
-// }; 
+// For testing your shape classes:
+// You would create another file for testing your shapes and import all your shape classes
+// If the code for shapes is in a folder, you would need to make sure to include that in the file path (e.g. ./Lib/shapes.js)
 
-const { Circle, Triangle, Square } = require('./Lib/shapes');
+const { generateSVGAttributes } = require('./index.js'); 
 
-describe('Shape Classes', () => {
-  test('Circle render() method generates correct SVG markup', () => {
-    const shape = new Circle();
-    shape.setColor('blue');
-    const expectedAttributes = '<circle cx="50" cy="50" r="40" style="fill:blue;" />';
-    expect(shape.render()).toEqual(expectedAttributes);
-  });
+// Your test cases go here
+test('generateSVGAttributes generates the correct SVG markup', () => {
+  const shape = 'circle';
+  const color = 'blue';
+  const letters = 'ABC';
 
-  test('Triangle render() method generates correct SVG markup', () => {
-    const shape = new Triangle();
-    shape.setColor('blue');
-    const expectedAttributes = '<polygon points="50,10 90,90 10,90" style="fill:blue;" />';
-    expect(shape.render()).toEqual(expectedAttributes);
-  });
+  const expectedSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <style>
+      .shape {
+        fill: blue;
+      }
+      .letters {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        fill: #fff;
+      }
+    </style>
+    <g class="shape"><circle cx="50" cy="50" r="40" /></g>
+    <text class="letters" x="50" y="60" text-anchor="middle">ABC</text>
+  </svg>`;
 
-  test('Square render() method generates correct SVG markup', () => {
-    const shape = new Square();
-    shape.setColor('blue');
-    const expectedAttributes = '<rect x="10" y="10" width="80" height="80" style="fill:blue;" />';
-    expect(shape.render()).toEqual(expectedAttributes);
-  });
+  const generatedSVG = generateSVGAttributes(shape, color, letters);
+
+  expect(generatedSVG).toBe(expectedSVG);
 });
