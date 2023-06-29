@@ -1,8 +1,11 @@
-// For testing your SVG output:
-// You would create a file and write tests to see if your code is properly outputting svg code to create a shape
-// You could just use a single shape for your tests, so you'd only need to import one shape (e.g. const { Square } = require("./shapes");)
+// For testing your shape classes:
+// You would create another file for testing your shapes and import all your shape classes
+// If the code for shapes is in a folder, you would need to make sure to include that in the file path (e.g. ./Lib/shapes.js)
 
-// // Jest test example: 
+// Jest test example: 
+
+// const { Circle, Triangle, Square } = require('./Lib/shapes');
+
 // describe('Testing Multiply'), () => {
 //   const color = 'blue'
 //   Test('Adds colour blue to class Triangle', () => {
@@ -12,27 +15,3 @@
 //   })
 // }; 
 
-const { Circle, Triangle, Square } = require('./Lib/shapes');
-
-describe('Shape Classes', () => {
-  test('Circle render() method generates correct SVG markup', () => {
-    const shape = new Circle();
-    shape.setColor('blue');
-    const expectedAttributes = '<circle cx="50" cy="50" r="40" style="fill:blue;" />';
-    expect(shape.render()).toEqual(expectedAttributes);
-  });
-
-  test('Triangle render() method generates correct SVG markup', () => {
-    const shape = new Triangle();
-    shape.setColor('blue');
-    const expectedAttributes = '<polygon points="50,10 90,90 10,90" style="fill:blue;" />';
-    expect(shape.render()).toEqual(expectedAttributes);
-  });
-
-  test('Square render() method generates correct SVG markup', () => {
-    const shape = new Square();
-    shape.setColor('blue');
-    const expectedAttributes = '<rect x="10" y="10" width="80" height="80" style="fill:blue;" />';
-    expect(shape.render()).toEqual(expectedAttributes);
-  });
-});

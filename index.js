@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const { Circle, Triangle, Square } = require('./Lib/shapes');
 
+
 class Logo {
   constructor() {
     this.text = '';
@@ -67,6 +68,7 @@ inquirer.prompt(questions).then((answers) => {
   logo.setShape(selectedShape);
 
   chosenLogo = logo.render();
+
 
   fs.writeFile('logo.svg', chosenLogo, (err) => {
     if (err) {

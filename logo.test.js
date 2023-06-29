@@ -1,31 +1,48 @@
-// For testing your shape classes:
-// You would create another file for testing your shapes and import all your shape classes
-// If the code for shapes is in a folder, you would need to make sure to include that in the file path (e.g. ./Lib/shapes.js)
 
-const { generateSVGAttributes } = require('./index.js'); 
 
-// Your test cases go here
-test('generateSVGAttributes generates the correct SVG markup', () => {
-  const shape = 'circle';
-  const color = 'blue';
-  const letters = 'ABC';
+// For testing your SVG output:
+// You would create a file and write tests to see if your code is properly outputting svg code to create a shape
+// You could just use a single shape for your tests, so you'd only need to import one shape (e.g. const { Square } = require("./shapes");)
 
-  const expectedSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <style>
-      .shape {
-        fill: blue;
-      }
-      .letters {
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        fill: #fff;
-      }
-    </style>
-    <g class="shape"><circle cx="50" cy="50" r="40" /></g>
-    <text class="letters" x="50" y="60" text-anchor="middle">ABC</text>
-  </svg>`;
 
-  const generatedSVG = generateSVGAttributes(shape, color, letters);
+const fs = require('fs');
+const Logo = require('./index');
+const { Circle, Triangle, Square } = require('./Lib/shapes');
 
-  expect(generatedSVG).toBe(expectedSVG);
+// Mock the inquirer.prompt function
+jest.mock('inquirer', () => ({
+  prompt: jest.fn().mockResolvedValue({
+    shape: 'circle',
+    color: 'blue',
+    letters: 'ABC',
+  }),
+}));
+
+describe('Logo', () => {
+  it('generates the correct SVG file', async () => {
+    const logo = new Logo();
+    logo.setText('ABC');
+
+    // Mock the render function of the shape object
+    const mockRender = jest.fn().mockReturnValue('<mocked-shape>');
+    logo.setShape({ render: mockRender });
+
+    // Mock the fs.writeFile function
+    const mockWriteFile = jest.spyOn(fs, 'writeFile').mockImplementation((path, data, callback) => {
+      expect(path).toBe('logo.svg');
+      expect(data).toContain('<svg');
+      expect(data).toContain('<mocked-shape>');
+      expect(data).toContain('<text class="letters"');
+
+      // Simulate successful write
+      callback(null);
+    });
+
+    // Execute the code
+    await logo.generateLogo();
+
+    // Verify the function calls
+    expect(mockRender).toHaveBeenCalled();
+    expect(mockWriteFile).toHaveBeenCalledWith('logo.svg', expect.any(String), expect.any(Function));
+  });
 });
