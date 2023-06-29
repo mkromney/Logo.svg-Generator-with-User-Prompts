@@ -9,7 +9,7 @@
   This set of code is designed to generate a logo.svg file containg a simple .svg logo. The user is given a series of prompts that allow a user to select the shape, colour and letters (only 3) of the logo.  
   
   Video Link of CLA:
-  
+  https://watch.screencastify.com/v/oZNErNZaTYuP42O4R8Mt
   
 
   ## Table of Contents
