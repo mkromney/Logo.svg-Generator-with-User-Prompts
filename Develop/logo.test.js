@@ -1,5 +1,3 @@
-
-
 // For testing your SVG output:
 // You would create a file and write tests to see if your code is properly outputting svg code to create a shape
 // You could just use a single shape for your tests, so you'd only need to import one shape (e.g. const { Square } = require("./shapes");)
@@ -7,7 +5,7 @@
 
 const fs = require('fs');
 const Logo = require('./index');
-const { Circle, Triangle, Square } = require('./Lib/shapes');
+const { Circle, Triangle, Square } = require('../Lib/shapes');
 
 // Mock the inquirer.prompt function
 jest.mock('inquirer', () => ({

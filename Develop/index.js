@@ -2,7 +2,7 @@
 
 const inquirer = require('inquirer');
 const fs = require('fs');
-const { Circle, Triangle, Square } = require('./Lib/shapes');
+const { Circle, Triangle, Square } = require('../Lib/shapes');
 
 // In this class we store the constructor and render methods which has two properties pulling from shapes.js, text and shape. //
 class Logo {
